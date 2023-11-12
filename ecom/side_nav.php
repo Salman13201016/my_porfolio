@@ -17,6 +17,8 @@
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="cat.php">Category</a>
                     </li>
+                    <li class="nav-item"> <a class="nav-link" href="sub_cat.php">Sub Category</a>
+                    </li>
                 </ul>
             </div>
         </li>
