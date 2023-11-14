@@ -56,9 +56,9 @@
                                     <form class="forms-sample">
                                         <div class=" form-group">
                                             <label for="exampleInputName1">Select Cateogory</label>
-                                            <select class="form-control">
+                                            <select class="form-control cat_id">
 
-                                                <option>
+                                                <option value="0">
                                                     Select your category
 
                                                 </option>
@@ -81,9 +81,9 @@
                                         <div class=" form-group">
                                             <label for="exampleInputName1">Name</label>
                                             <input type="text" class="form-control" placeholder="Name" name="name"
-                                                id="cat_name">
+                                                id="sub_cat_name" disabled>
                                         </div>
-                                        <button type="button" class="btn btn-primary me-2 cat_btn"
+                                        <button type="button" class="btn btn-primary me-2 sub_cat_btn"
                                             name="submit">Submit</button>
 
                                     </form>
@@ -134,11 +134,14 @@
                                                         Category Name
                                                     </th>
                                                     <th>
+                                                        Sub Category Name
+                                                    </th>
+                                                    <th>
                                                         Action
                                                     </th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="cat_tbody">
+                                            <tbody id="sub_cat_tbody">
 
 
                                             </tbody>
@@ -210,33 +213,54 @@
 
         });
 
+        $('.cat_id').change(function(e) {
+            alert(1)
+            cat_id = $(".cat_id option:selected").val();
+            if (cat_id == 0) {
+                // alert("hello")
 
+                $("#sub_cat_name").prop("disabled", true);
+            } else {
+                $("#sub_cat_name").prop("disabled", false);
+            }
 
-        $('.cat_btn').click(function(e) {
+        });
+
+        $('.sub_cat_btn').click(function(e) {
             e.preventDefault()
-            cat_name = $('#cat_name').val()
+            cat_id = $(".cat_id option:selected").val();
+            sub_cat_name = $('#sub_cat_name').val()
+
 
             data = {
-                name: cat_name
+                cat_id: cat_id,
+                sub_cat_name: sub_cat_name
             };
             $.ajax({
                 type: "POST",
-                url: 'cat_insert.php',
+                url: 'sub_cat_insert.php',
                 data: data,
                 success: function(response) {
-
+                    alert(response)
                     data = JSON.parse(response)
-                    $('#cat_tbody').empty();
+
+                    $('#sub_cat_tbody').empty();
                     for (i = 0; i < data.length; i = i + 1) {
 
-                        t_r_data = '<tr><td class = "py-1" style="display:none;">' + data[i]
-                            .id +
-                            '</td> <td class = "py-1" >' + i + '</td> <td>' +
+                        t_r_data =
+                            '<tr><td class = "py-1" style="display:none;">' +
                             data[i]
-                            .name +
-                            '</td > <td class = "py-1" ><a href="#"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a><a href="#"> <i class="fa-sharp fa-solid fa-trash"></i></a></td></tr >'
+                            .sub_cat_id +
+                            '</td> <td class = "py-1" >' + i +
+                            '</td> <td>' +
+                            data[i]
+                            .cat_name +
+                            '</td>  <td>' +
+                            data[i]
+                            .sub_cat_name +
+                            '</td> <td class = "py-1" ><a href="#"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a><a href="#"> <i class="fa-sharp fa-solid fa-trash"></i></a></td></tr >'
                         console.log(t_r_data)
-                        $('#cat_tbody').append(t_r_data);
+                        $('#sub_cat_tbody').append(t_r_data);
                     }
 
                 }
@@ -282,7 +306,9 @@
                     $('#cat_tbody').empty();
                     for (i = 0; i < data.length; i = i + 1) {
 
-                        t_r_data = '<tr><td class = "py-1" style="display:none;">' + data[i]
+                        t_r_data =
+                            '<tr><td class = "py-1" style="display:none;">' +
+                            data[i]
                             .id +
                             '</td> <td class = "py-1" >' + i + '</td> <td>' +
                             data[i]
@@ -317,10 +343,12 @@
                         $('#cat_tbody').empty();
                         for (i = 0; i < data.length; i = i + 1) {
 
-                            t_r_data = '<tr><td class = "py-1" style="display:none;">' +
+                            t_r_data =
+                                '<tr><td class = "py-1" style="display:none;">' +
                                 data[i]
                                 .id +
-                                '</td> <td class = "py-1" >' + i + '</td> <td>' +
+                                '</td> <td class = "py-1" >' + i +
+                                '</td> <td>' +
                                 data[i]
                                 .name +
                                 '</td > <td class = "py-1" ><a href="#"><i class="fa-sharp fa-solid fa-pen-to-square edit_i_btn"></i></a><a href="#"> <i class="fa-sharp fa-solid fa-trash delete_i_btn"></i></a></td></tr >'
