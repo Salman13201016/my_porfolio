@@ -2,7 +2,8 @@
   include 'db_config.php';
   $sql = "SELECT * FROM categories";
   $query = mysqli_query($con,$sql);
-
+  $sql = "SELECT categories.name as cat_name, GROUP_CONCAT(subcategories.name) as sub_cat_name FROM subcategories INNER JOIN categories ON subcategories.cat_id = categories.id GROUP BY categories.id";
+  $query = mysqli_query($con,$sql);
 
 ?>
 <!DOCTYPE html>
@@ -219,7 +220,7 @@
                                     ?>
                                     <li class="dropdown mega-menu">
                                         <a href="category.html" data-hover="dropdown" class="dropdown-toggle"
-                                            data-toggle="dropdown"><?php echo $result['name']; ?>
+                                            data-toggle="dropdown"><?php echo $result['cat_name']; ?>
 
                                         </a>
                                         <ul class="dropdown-menu container">
@@ -229,73 +230,24 @@
                                                         <div class="col-xs-12 col-sm-12 col-md-2 col-menu">
                                                             <h2 class="title">Laptops</h2>
                                                             <ul class="links">
-                                                                <li><a href="#">Gaming</a></li>
-                                                                <li><a href="#">Laptop Skins</a></li>
-                                                                <li><a href="#">Apple</a></li>
-                                                                <li><a href="#">Dell</a></li>
-                                                                <li><a href="#">Lenovo</a></li>
-                                                                <li><a href="#">Microsoft</a></li>
-                                                                <li><a href="#">Asus</a></li>
-                                                                <li><a href="#">Adapters</a></li>
-                                                                <li><a href="#">Batteries</a></li>
-                                                                <li><a href="#">Cooling Pads</a></li>
+                                                                <?php
+                                                                $ar = explode(',',$result['sub_cat_name']);
+                                                                for($i=0;$i<count($ar);$i=$i+1){
+                                                                    
+                                                                
+                                                                
+                                                                ?>
+                                                                <li><a href="#"><?php echo $ar[$i]; ?></a></li>
+                                                                <?php 
+                                                                    }
+                                                                ?>
                                                             </ul>
                                                         </div>
                                                         <!-- /.col -->
 
-                                                        <div class="col-xs-12 col-sm-12 col-md-2 col-menu">
-                                                            <h2 class="title">Desktops</h2>
-                                                            <ul class="links">
-                                                                <li><a href="#">Routers & Modems</a></li>
-                                                                <li><a href="#">CPUs, Processors</a></li>
-                                                                <li><a href="#">PC Gaming Store</a></li>
-                                                                <li><a href="#">Graphics Cards</a></li>
-                                                                <li><a href="#">Components</a></li>
-                                                                <li><a href="#">Webcam</a></li>
-                                                                <li><a href="#">Memory (RAM)</a></li>
-                                                                <li><a href="#">Motherboards</a></li>
-                                                                <li><a href="#">Keyboards</a></li>
-                                                                <li><a href="#">Headphones</a></li>
-                                                            </ul>
-                                                        </div>
+
                                                         <!-- /.col -->
 
-                                                        <div class="col-xs-12 col-sm-12 col-md-2 col-menu">
-                                                            <h2 class="title">Cameras</h2>
-                                                            <ul class="links">
-                                                                <li><a href="#">Accessories</a></li>
-                                                                <li><a href="#">Binoculars</a></li>
-                                                                <li><a href="#">Telescopes</a></li>
-                                                                <li><a href="#">Camcorders</a></li>
-                                                                <li><a href="#">Digital</a></li>
-                                                                <li><a href="#">Film Cameras</a></li>
-                                                                <li><a href="#">Flashes</a></li>
-                                                                <li><a href="#">Lenses</a></li>
-                                                                <li><a href="#">Surveillance</a></li>
-                                                                <li><a href="#">Tripods</a></li>
-                                                            </ul>
-                                                        </div>
-                                                        <!-- /.col -->
-                                                        <div class="col-xs-12 col-sm-12 col-md-2 col-menu">
-                                                            <h2 class="title">Mobile Phones</h2>
-                                                            <ul class="links">
-                                                                <li><a href="#">Apple</a></li>
-                                                                <li><a href="#">Samsung</a></li>
-                                                                <li><a href="#">Lenovo</a></li>
-                                                                <li><a href="#">Motorola</a></li>
-                                                                <li><a href="#">LeEco</a></li>
-                                                                <li><a href="#">Asus</a></li>
-                                                                <li><a href="#">Acer</a></li>
-                                                                <li><a href="#">Accessories</a></li>
-                                                                <li><a href="#">Headphones</a></li>
-                                                                <li><a href="#">Memory Cards</a></li>
-                                                            </ul>
-                                                        </div>
-                                                        <div
-                                                            class="col-xs-12 col-sm-12 col-md-4 col-menu custom-banner">
-                                                            <a href="#"><img alt=""
-                                                                    src="assets/images/banners/banner-side.png"></a>
-                                                        </div>
                                                     </div>
                                                     <!-- /.row -->
                                                 </div>
@@ -438,9 +390,11 @@
                             <h3 class="new-product-title pull-left">New Products</h3>
                             <ul class="nav nav-tabs nav-tab-line pull-right" id="new-products-1">
                                 <li class="active"><a data-transition-type="backSlide" href="#all"
-                                        data-toggle="tab">All</a></li>
+                                        data-toggle="tab">All</a>
+                                </li>
                                 <li><a data-transition-type="backSlide" href="#smartphone"
-                                        data-toggle="tab">Clothing</a></li>
+                                        data-toggle="tab">Clothing</a>
+                                </li>
                                 <li><a data-transition-type="backSlide" href="#laptop" data-toggle="tab">Electronics</a>
                                 </li>
                                 <li><a data-transition-type="backSlide" href="#apple" data-toggle="tab">Shoes</a></li>
@@ -490,7 +444,8 @@
                                                                 <li class="lnk wishlist"> <a data-toggle="tooltip"
                                                                         class="add-to-cart" href="detail.html"
                                                                         title="Wishlist"> <i
-                                                                            class="icon fa fa-heart"></i> </a> </li>
+                                                                            class="icon fa fa-heart"></i>
+                                                                    </a> </li>
                                                                 <li class="lnk"> <a data-toggle="tooltip"
                                                                         class="add-to-cart" href="detail.html"
                                                                         title="Compare"> <i class="fa fa-signal"
@@ -1357,7 +1312,8 @@
                                                     <div class="product-image">
                                                         <div class="image"> <a href="detail.html"><img
                                                                     src="assets/images/products/p15.jpg"
-                                                                    alt="image"></a> </div>
+                                                                    alt="image"></a>
+                                                        </div>
                                                         <!-- /.image -->
 
                                                         <div class="tag hot"><span>hot</span></div>
@@ -1876,7 +1832,8 @@
                                                     </li>
                                                     <li class="lnk"> <a class="add-to-cart" href="detail.html"
                                                             title="Compare"> <i class="fa fa-signal"
-                                                                aria-hidden="true"></i> </a> </li>
+                                                                aria-hidden="true"></i>
+                                                        </a> </li>
                                                 </ul>
                                             </div>
                                             <!-- /.action -->
@@ -1926,7 +1883,8 @@
                                                     </li>
                                                     <li class="lnk"> <a class="add-to-cart" href="detail.html"
                                                             title="Compare"> <i class="fa fa-signal"
-                                                                aria-hidden="true"></i> </a> </li>
+                                                                aria-hidden="true"></i>
+                                                        </a> </li>
                                                 </ul>
                                             </div>
                                             <!-- /.action -->
@@ -1976,7 +1934,8 @@
                                                     </li>
                                                     <li class="lnk"> <a class="add-to-cart" href="detail.html"
                                                             title="Compare"> <i class="fa fa-signal"
-                                                                aria-hidden="true"></i> </a> </li>
+                                                                aria-hidden="true"></i>
+                                                        </a> </li>
                                                 </ul>
                                             </div>
                                             <!-- /.action -->
@@ -2026,7 +1985,8 @@
                                                     </li>
                                                     <li class="lnk"> <a class="add-to-cart" href="detail.html"
                                                             title="Compare"> <i class="fa fa-signal"
-                                                                aria-hidden="true"></i> </a> </li>
+                                                                aria-hidden="true"></i>
+                                                        </a> </li>
                                                 </ul>
                                             </div>
                                             <!-- /.action -->
@@ -2076,7 +2036,8 @@
                                                     </li>
                                                     <li class="lnk"> <a class="add-to-cart" href="detail.html"
                                                             title="Compare"> <i class="fa fa-signal"
-                                                                aria-hidden="true"></i> </a> </li>
+                                                                aria-hidden="true"></i>
+                                                        </a> </li>
                                                 </ul>
                                             </div>
                                             <!-- /.action -->
@@ -2126,7 +2087,8 @@
                                                     </li>
                                                     <li class="lnk"> <a class="add-to-cart" href="detail.html"
                                                             title="Compare"> <i class="fa fa-signal"
-                                                                aria-hidden="true"></i> </a> </li>
+                                                                aria-hidden="true"></i>
+                                                        </a> </li>
                                                 </ul>
                                             </div>
                                             <!-- /.action -->
@@ -2619,7 +2581,8 @@
                                                     </li>
                                                     <li class="lnk"> <a class="add-to-cart" href="detail.html"
                                                             title="Compare"> <i class="fa fa-signal"
-                                                                aria-hidden="true"></i> </a> </li>
+                                                                aria-hidden="true"></i>
+                                                        </a> </li>
                                                 </ul>
                                             </div>
                                             <!-- /.action -->
@@ -2669,7 +2632,8 @@
                                                     </li>
                                                     <li class="lnk"> <a class="add-to-cart" href="detail.html"
                                                             title="Compare"> <i class="fa fa-signal"
-                                                                aria-hidden="true"></i> </a> </li>
+                                                                aria-hidden="true"></i>
+                                                        </a> </li>
                                                 </ul>
                                             </div>
                                             <!-- /.action -->
@@ -2719,7 +2683,8 @@
                                                     </li>
                                                     <li class="lnk"> <a class="add-to-cart" href="detail.html"
                                                             title="Compare"> <i class="fa fa-signal"
-                                                                aria-hidden="true"></i> </a> </li>
+                                                                aria-hidden="true"></i>
+                                                        </a> </li>
                                                 </ul>
                                             </div>
                                             <!-- /.action -->
@@ -2769,7 +2734,8 @@
                                                     </li>
                                                     <li class="lnk"> <a class="add-to-cart" href="detail.html"
                                                             title="Compare"> <i class="fa fa-signal"
-                                                                aria-hidden="true"></i> </a> </li>
+                                                                aria-hidden="true"></i>
+                                                        </a> </li>
                                                 </ul>
                                             </div>
                                             <!-- /.action -->
@@ -2819,7 +2785,8 @@
                                                     </li>
                                                     <li class="lnk"> <a class="add-to-cart" href="detail.html"
                                                             title="Compare"> <i class="fa fa-signal"
-                                                                aria-hidden="true"></i> </a> </li>
+                                                                aria-hidden="true"></i>
+                                                        </a> </li>
                                                 </ul>
                                             </div>
                                             <!-- /.action -->
@@ -2869,7 +2836,8 @@
                                                     </li>
                                                     <li class="lnk"> <a class="add-to-cart" href="detail.html"
                                                             title="Compare"> <i class="fa fa-signal"
-                                                                aria-hidden="true"></i> </a> </li>
+                                                                aria-hidden="true"></i>
+                                                        </a> </li>
                                                 </ul>
                                             </div>
                                             <!-- /.action -->
@@ -2942,7 +2910,8 @@
                                         <div class="action">
                                             <div class="add-cart-button btn-group">
                                                 <button class="btn btn-primary icon" data-toggle="dropdown"
-                                                    type="button"> <i class="fa fa-shopping-cart"></i> </button>
+                                                    type="button">
+                                                    <i class="fa fa-shopping-cart"></i> </button>
                                                 <button class="btn btn-primary cart-btn" type="button">Add to
                                                     cart</button>
                                             </div>
@@ -2993,7 +2962,8 @@
                                         <div class="action">
                                             <div class="add-cart-button btn-group">
                                                 <button class="btn btn-primary icon" data-toggle="dropdown"
-                                                    type="button"> <i class="fa fa-shopping-cart"></i> </button>
+                                                    type="button">
+                                                    <i class="fa fa-shopping-cart"></i> </button>
                                                 <button class="btn btn-primary cart-btn" type="button">Add to
                                                     cart</button>
                                             </div>
@@ -3044,7 +3014,8 @@
                                         <div class="action">
                                             <div class="add-cart-button btn-group">
                                                 <button class="btn btn-primary icon" data-toggle="dropdown"
-                                                    type="button"> <i class="fa fa-shopping-cart"></i> </button>
+                                                    type="button">
+                                                    <i class="fa fa-shopping-cart"></i> </button>
                                                 <button class="btn btn-primary cart-btn" type="button">Add to
                                                     cart</button>
                                             </div>
@@ -3374,7 +3345,8 @@
                                     href="category.html">Sweatpants</a> <a class="item" title="Sneaker"
                                     href="category.html">Sneaker</a> <a class="item" title="Toys"
                                     href="category.html">Toys</a> <a class="item" title="Rose"
-                                    href="category.html">Rose</a> </div>
+                                    href="category.html">Rose</a>
+                            </div>
                             <!-- /.tag-list -->
                         </div>
                         <!-- /.sidebar-widget-body -->
@@ -3459,7 +3431,8 @@
                                                         <div class="product-image">
                                                             <div class="image"> <a href="#"> <img
                                                                         src="assets/images/products/p26.jpg"
-                                                                        alt="image"> </a> </div>
+                                                                        alt="image">
+                                                                </a> </div>
                                                             <!-- /.image -->
 
                                                         </div>
@@ -3655,7 +3628,8 @@
                                                         <div class="product-image">
                                                             <div class="image"> <a href="#"> <img
                                                                         src="assets/images/products/p13.jpg"
-                                                                        alt="image"> </a> </div>
+                                                                        alt="image">
+                                                                </a> </div>
                                                             <!-- /.image -->
 
                                                         </div>
@@ -3911,7 +3885,8 @@
                         <li class="fb pull-left"><a target="_blank" rel="nofollow" href="#" title="Facebook"></a></li>
                         <li class="tw pull-left"><a target="_blank" rel="nofollow" href="#" title="Twitter"></a></li>
                         <li class="googleplus pull-left"><a target="_blank" rel="nofollow" href="#"
-                                title="GooglePlus"></a></li>
+                                title="GooglePlus"></a>
+                        </li>
                         <li class="rss pull-left"><a target="_blank" rel="nofollow" href="#" title="RSS"></a></li>
                         <li class="pintrest pull-left"><a target="_blank" rel="nofollow" href="#" title="PInterest"></a>
                         </li>
