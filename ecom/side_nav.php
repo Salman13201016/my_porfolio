@@ -19,6 +19,8 @@
                     </li>
                     <li class="nav-item"> <a class="nav-link" href="sub_cat.php">Sub Category</a>
                     </li>
+                    <li class="nav-item"> <a class="nav-link" href="product.php">Product</a>
+                    </li>
                 </ul>
             </div>
         </li>
