@@ -170,7 +170,7 @@
                     t_r_data = '<tr> <td class = "py-1" style="display:none;">' + data[i].id +
                         '</td> <td class = "py-1" >' + i +
                         '</td> <td>' + data[i].name +
-                        '</td ><td class = "py-1" ><a href="#"><i class="fa-sharp fa-solid fa-pen-to-square edit_i_btn" ></i></a><a href="#"> <i class="fa-sharp fa-solid fa-trash delete_i_btn"></i></a></td> </tr >'
+                        '</td ><td class = "py-1" ><a href="#"><i class="fa-sharp fa-solid fa-pen-to-square edit_i_btn" ></i></a>&nbsp&nbsp&nbsp<a href="#"> <i class="fa-sharp fa-solid fa-trash delete_i_btn"></i></a></td> </tr >'
                     console.log(t_r_data)
                     $('#cat_tbody').append(t_r_data);
                 }

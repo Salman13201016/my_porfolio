@@ -3,8 +3,8 @@
     $sql = "SELECT * FROM categories ORDER BY id";
     $query = mysqli_query($con,$sql);
 
-
-
+    $sql_sub = "SELECT * FROM subcategories ORDER BY id";
+    $query_sub = mysqli_query($con,$sql_sub);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,21 +51,36 @@
                             <div class="card">
 
                                 <div class="card-body">
-                                    <h4 class="card-title">Sub-Category</h4>
+                                    <h4 class="card-title">Products</h4>
                                     <span id="status"></span>
                                     <form class="forms-sample">
-                                        <div class=" form-group">
-                                            <label for="exampleInputName1">Select Cateogory</label>
-                                            <select class="form-control cat_id">
 
+                                        <div class=" form-group">
+                                            <label for="exampleInputName1">Select cateogory</label>
+                                            <select class="form-control cat_id">
                                                 <option value="0">
                                                     Select your category
-
                                                 </option>
                                                 <?php 
-                                                    while($result=mysqli_fetch_assoc($query)){
-                                                        
-                                                    
+                                                    while($result=mysqli_fetch_assoc($query)){                                                                                                         
+                                                ?>
+                                                <option value="<?php echo $result['id'] ?>">
+                                                    <?php echo $result['name']; ?>
+                                                </option>
+                                                <?php 
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+
+                                        <div class=" form-group">
+                                            <label for="exampleInputName1">Select Sub-cateogory</label>
+                                            <select class="form-control sub_cat_id">
+                                                <option value="0">
+                                                    Select your sub-category
+                                                </option>
+                                                <?php 
+                                                    while($result=mysqli_fetch_assoc($query_sub)){                                                
                                                 ?>
                                                 <option value="<?php echo $result['id'] ?>">
                                                     <?php echo $result['name']; ?>
@@ -74,16 +89,15 @@
                                                 <?php 
                                                     }
                                                 ?>
-
                                             </select>
+                                        </div>
 
-                                        </div>
                                         <div class=" form-group">
-                                            <label for="exampleInputName1">Sub-category Name</label>
+                                            <label for="exampleInputName1">Product Name</label>
                                             <input type="text" class="form-control" placeholder="Name" name="name"
-                                                id="sub_cat_name" disabled>
+                                                id="pd_name" disabled>
                                         </div>
-                                        <button type="button" class="btn btn-primary me-2 sub_cat_btn"
+                                        <button type="button" class="btn btn-primary me-2 pd_btn"
                                             name="submit">Submit</button>
 
                                     </form>
@@ -128,13 +142,13 @@
                                                         pid
                                                     </th>
                                                     <th>
-                                                        SL
+                                                        Sl
                                                     </th>
                                                     <th>
-                                                        Category Name
+                                                        Sub-category
                                                     </th>
                                                     <th>
-                                                        Sub Category Name
+                                                        Product
                                                     </th>
                                                     <th>
                                                         Action
@@ -188,183 +202,45 @@
     <script>
     $(document).ready(function() {
         $('#edit_div').hide();
-        $.ajax({
-            type: "POST",
-            url: 'show_cat.php',
-            success: function(response) {
-                data = JSON.parse(response)
-                for (i = 0; i < data.length; i = i + 1) {
 
-                    t_r_data = '<tr> <td class = "py-1" style="display:none;">' + data[i].id +
-                        '</td> <td class = "py-1" >' + i +
-                        '</td> <td>' + data[i].name +
-                        '</td ><td class = "py-1" ><a href="#"><i class="fa-sharp fa-solid fa-pen-to-square edit_i_btn" ></i></a><a href="#"> <i class="fa-sharp fa-solid fa-trash delete_i_btn"></i></a></td> </tr >'
-                    console.log(t_r_data)
-                    $('#cat_tbody').append(t_r_data);
-                }
-
-
-                // $('#status').text(response)
-                // alert(response)
-                // Process the data and add rows to the table
-
-            }
-
-
-        });
-
+        $(".sub_cat_id").prop("disabled", true);
         $('.cat_id').change(function(e) {
             alert(1)
             cat_id = $(".cat_id option:selected").val();
             if (cat_id == 0) {
                 // alert("hello")
 
-                $("#sub_cat_name").prop("disabled", true);
+                $(".sub_cat_id").prop("disabled", true);
             } else {
-                $("#sub_cat_name").prop("disabled", false);
-            }
+                $(".sub_cat_id").prop("disabled", false);
 
-        });
-
-        $('.sub_cat_btn').click(function(e) {
-            e.preventDefault()
-            cat_id = $(".cat_id option:selected").val();
-            sub_cat_name = $('#sub_cat_name').val()
-
-
-            data = {
-                cat_id: cat_id,
-                sub_cat_name: sub_cat_name
-            };
-            $.ajax({
-                type: "POST",
-                url: 'sub_cat_insert.php',
-                data: data,
-                success: function(response) {
-                    alert(response)
-                    data = JSON.parse(response)
-
-                    $('#sub_cat_tbody').empty();
-                    for (i = 0; i < data.length; i = i + 1) {
-
-                        t_r_data =
-                            '<tr><td class = "py-1" style="display:none;">' +
-                            data[i]
-                            .sub_cat_id +
-                            '</td> <td class = "py-1" >' + i +
-                            '</td> <td>' +
-                            data[i]
-                            .cat_name +
-                            '</td>  <td>' +
-                            data[i]
-                            .sub_cat_name +
-                            '</td> <td class = "py-1" ><a href="#"><i class="fa-sharp fa-solid fa-pen-to-square"></i></a><a href="#"> <i class="fa-sharp fa-solid fa-trash"></i></a></td></tr >'
-                        console.log(t_r_data)
-                        $('#sub_cat_tbody').append(t_r_data);
-                    }
-
-                }
-
-
-            });
-
-        });
-
-        $('body').on('click', '.edit_i_btn', function(e) {
-            e.preventDefault()
-            var tr = $(this).closest('tr');
-            var td_cat_name = tr.find("td").eq(2).text()
-            var td_cat_id = tr.find("td").eq(0).text()
-            $('#edit_cat_name').val(td_cat_name)
-            // alert(td)
-            $('#edit_cat_id').val(td_cat_id)
-            $('#edit_div').show();
-            $('#insert_div').hide();
-        });
-        $('.back_cat_btn').click(function(e) {
-            $('#edit_div').hide();
-            $('#insert_div').show();
-        });
-
-        $('.edit_cat_btn').click(function(e) {
-            e.preventDefault()
-            cat_name = $('#edit_cat_name').val()
-            cat_id = $('#edit_cat_id').val()
-
-            data = {
-                name: cat_name,
-                id: cat_id
-            };
-            $.ajax({
-                type: "POST",
-                url: 'cat_edit.php',
-                data: data,
-                success: function(response) {
-                    alert(response)
-
-                    data = JSON.parse(response)
-                    $('#cat_tbody').empty();
-                    for (i = 0; i < data.length; i = i + 1) {
-
-                        t_r_data =
-                            '<tr><td class = "py-1" style="display:none;">' +
-                            data[i]
-                            .id +
-                            '</td> <td class = "py-1" >' + i + '</td> <td>' +
-                            data[i]
-                            .name +
-                            '</td > <td class = "py-1" ><a href="#"><i class="fa-sharp fa-solid fa-pen-to-square edit_i_btn"></i></a><a href="#"> <i class="fa-sharp fa-solid fa-trash"></i></a></td></tr >'
-                        console.log(t_r_data)
-                        $('#cat_tbody').append(t_r_data);
-                    }
-
-                }
-
-
-            });
-
-        });
-        $('body').on('click', '.delete_i_btn', function(e) {
-            e.preventDefault()
-            if (confirm("Do you really want to delete?")) {
-                var tr = $(this).closest('tr');
-                var td_cat_id = tr.find("td").eq(0).text()
                 data = {
-                    id: td_cat_id
+                  cat_id: cat_id
                 };
                 $.ajax({
-                    type: "POST",
-                    url: 'cat_delete.php',
-                    data: data,
-                    success: function(response) {
-                        alert(response)
+                  type: "POST",
+                  url: 'sub_cat_single.php',
+                  data: data,
+                  success: function(response) {
+                  
+                    data = JSON.parse(response)
+                    // alert(data)
+                    console.log(response)
+                    
+                  $('.sub_cat_id').empty();
+                  for (i = 0; i < data.length; i = i + 1) {
 
-                        data = JSON.parse(response)
-                        $('#cat_tbody').empty();
-                        for (i = 0; i < data.length; i = i + 1) {
-
-                            t_r_data =
-                                '<tr><td class = "py-1" style="display:none;">' +
-                                data[i]
-                                .id +
-                                '</td> <td class = "py-1" >' + i +
-                                '</td> <td>' +
-                                data[i]
-                                .name +
-                                '</td > <td class = "py-1" ><a href="#"><i class="fa-sharp fa-solid fa-pen-to-square edit_i_btn"></i></a><a href="#"> <i class="fa-sharp fa-solid fa-trash delete_i_btn"></i></a></td></tr >'
-                            console.log(t_r_data)
-                            $('#cat_tbody').append(t_r_data);
-                        }
-
-                    }
-
-
-                });
-
-            } else {
-                alert("please don't delete")
-            }
+                    option_data = '<option value="'+ data[i].id + '">'+ data[i].name +'</option>'
+                    console.log(option_data)
+                    $('.sub_cat_id').append(option_data);
+                }
+                  }
+                  
         });
+            }
+
+        });
+
     });
     </script>
 

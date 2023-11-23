@@ -18,6 +18,7 @@
                     <li class="nav-item"> <a class="nav-link" href="cat.php">Category</a>
                     </li>
                     <li class="nav-item"> <a class="nav-link" href="sub_cat.php">Sub Category</a>
+                    <li class="nav-item"> <a class="nav-link" href="pd.php">Products</a>
                     </li>
                 </ul>
             </div>
