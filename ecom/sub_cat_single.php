@@ -18,6 +18,6 @@
       echo $json_data;
     }
     else{
-      echo "No data available";
+      echo "0";
     }
 ?>

@@ -1,6 +1,7 @@
 <?php 
     include 'db_config.php';
-    $sql = "SELECT * FROM categories ORDER BY id";
+    $sql = "SELECT DISTINCT categories.name as cat_name, subcategories.cat_id as cat_id FROM subcategories INNER JOIN categories ON subcategories.cat_id = categories.id";
+            
     $query = mysqli_query($con,$sql);
 
     $sql_sub = "SELECT * FROM subcategories ORDER BY id";
@@ -64,8 +65,8 @@
                                                 <?php 
                                                     while($result=mysqli_fetch_assoc($query)){                                                                                                         
                                                 ?>
-                                                <option value="<?php echo $result['id'] ?>">
-                                                    <?php echo $result['name']; ?>
+                                                <option value="<?php echo $result['cat_id']; ?>">
+                                                    <?php echo $result['cat_name']; ?>
                                                 </option>
                                                 <?php 
                                                     }
@@ -210,9 +211,9 @@
             if (cat_id == 0) {
                 // alert("hello")
 
-                $(".sub_cat_id").prop("disabled", true);
+              $(".sub_cat_id").prop("disabled", true);
             } else {
-                $(".sub_cat_id").prop("disabled", false);
+              $(".sub_cat_id").prop("disabled", false);
 
                 data = {
                   cat_id: cat_id
@@ -222,20 +223,29 @@
                   url: 'sub_cat_single.php',
                   data: data,
                   success: function(response) {
-                  
-                    data = JSON.parse(response)
-                    // alert(data)
-                    console.log(response)
-                    
-                  $('.sub_cat_id').empty();
-                  for (i = 0; i < data.length; i = i + 1) {
+                    if(response == '0') {
+                      $('.sub_cat_id').empty();
+                      option_data = '<option value="0"> No data available </option>'
+                      $('.sub_cat_id').append(option_data);
+                      $(".sub_cat_id").prop("disabled", true);
 
-                    option_data = '<option value="'+ data[i].id + '">'+ data[i].name +'</option>'
-                    console.log(option_data)
-                    $('.sub_cat_id').append(option_data);
-                }
+                    } else {
+                      data = JSON.parse(response)
+                      // alert(data)
+                      console.log(response)                   
+                      $('.sub_cat_id').empty();
+                      option_data = '<option value="0"> Select your sub-category </option>'
+                      $('.sub_cat_id').append(option_data);
+                    
+                      for (i = 0; i < data.length; i = i + 1) {
+
+                      option_data = '<option value="'+ data[i].id + '">'+ data[i].name +'</option>'
+                      console.log(option_data)
+                      $('.sub_cat_id').append(option_data);
+                      }
+                    }
                   }
-                  
+
         });
             }
 
