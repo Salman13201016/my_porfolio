@@ -6,10 +6,6 @@
 
     $sql1 = "SELECT * FROM subcategories ORDER BY id";
     $query1 = mysqli_query($con,$sql1);
-
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -65,12 +61,10 @@
 
                                                 <option value="0">
                                                     Select your category
-
                                                 </option>
                                                 <?php 
                                                     while($result=mysqli_fetch_assoc($query)){
-                                                        
-                                                    
+  
                                                 ?>
                                                 <option value="<?php echo $result['cat_id'] ?>">
                                                     <?php echo $result['cat_name']; ?>
@@ -109,8 +103,40 @@
                                         </div>
                                         <div class=" form-group">
                                             <label for="exampleInputName1">Name</label>
-                                            <input type="text" class="form-control" placeholder="Name" name="name"
-                                                id="sub_cat_name" disabled>
+                                            <input type="text" class="form-control common_input" placeholder="Name"
+                                                name="name" id="Name" disabled>
+                                        </div>
+                                        <div class=" form-group">
+                                            <label for="exampleInputName1">Description</label>
+                                            <input type="text" class="form-control common_input" placeholder="Name"
+                                                name="description" id="Description" disabled>
+                                        </div>
+                                        <div class=" form-group">
+                                            <label for="exampleInputName1">Price</label>
+                                            <input type="text" class="form-control common_input" placeholder=""
+                                                name="description" id="Price" disabled>
+                                        </div>
+                                        <div class=" form-group">
+                                            <label for="exampleInputName1">Discount</label>
+                                            <input type="text" class="form-control common_input" placeholder="Name"
+                                                name="discount" id="discount" disabled>
+                                        </div>
+                                        <div class=" form-group">
+                                            <label for="exampleInputName1">Sale Price</label>
+                                            <input type="text" class="form-control" placeholder="Name"
+                                                name="discount_price" id="discount_price" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Image upload</label>
+                                            <input type="file" name="img[]" class="file-upload-default">
+                                            <div class="input-group col-xs-12">
+                                                <input type="file" class="form-control file-upload-info"
+                                                    placeholder="Upload Image" name="image">
+                                                <span class="input-group-append">
+                                                    <!-- <button class="file-upload-browse btn btn-primary"
+                                                        type="button">Upload</button> -->
+                                                </span>
+                                            </div>
                                         </div>
                                         <button type="button" class="btn btn-primary me-2 sub_cat_btn"
                                             name="submit">Submit</button>
@@ -273,8 +299,33 @@
             }
 
         });
+        $('.sub_cat_id').change(function(e) {
+            alert($('.common_input').length)
+            $('.common_input').prop('disabled', false)
+
+            // $('.common_input').each(function(index) {
+            //     console.log(index)
+            //     $(this).prop('disabled', false)
+            // });
 
 
+        });
+        var delay = 3000; // 2 seconds
+        var timeoutId;
+
+        $('#discount').keyup(function() {
+
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(function() {
+                price = parseFloat($("#Price").val());
+                discount = parseFloat($("#discount").val())
+                discount_price = price - (price * discount) / 100
+                console.log(discount_price)
+                $("#discount_price").val(discount_price)
+
+            }, delay);
+
+        });
     });
     </script>
 
