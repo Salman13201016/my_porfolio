@@ -63,7 +63,7 @@
                                                     Select your category
                                                 </option>
                                                 <?php 
-                                                    while($result=mysqli_fetch_assoc($query)){                                                                                                         
+                                                    while($result=mysqli_fetch_assoc($query)){                                
                                                 ?>
                                                 <option value="<?php echo $result['cat_id']; ?>">
                                                     <?php echo $result['cat_name']; ?>
@@ -81,11 +81,10 @@
                                                     Select your sub-category
                                                 </option>
                                                 <?php 
-                                                    while($result=mysqli_fetch_assoc($query_sub)){                                                
+                                                    while($result=mysqli_fetch_assoc($query_sub)){                                          
                                                 ?>
                                                 <option value="<?php echo $result['id'] ?>">
                                                     <?php echo $result['name']; ?>
-
                                                 </option>
                                                 <?php 
                                                     }
@@ -94,10 +93,46 @@
                                         </div>
 
                                         <div class=" form-group">
-                                            <label for="exampleInputName1">Product Name</label>
-                                            <input type="text" class="form-control" placeholder="Name" name="name"
-                                                id="pd_name" disabled>
+                                            <label for="exampleInputName1">Name</label>
+                                            <input type="text" class="form-control common_pd" placeholder="Product Name" name="name"
+                                                id="name" disabled>
                                         </div>
+                                        <div class=" form-group">
+                                            <label for="exampleInputName1">Description</label>
+                                            <textarea class="form-control common_pd" placeholder="Product Description" name="description"
+                                                id="description" rows="10" cols="80" disabled></textarea>
+                                          <script>
+                                            CKEDITOR.replace('role');
+                                          </script>
+
+                                          <!-- <input type="text" class="form-control" id="exampleInputDescription" placeholder="role" name="role"> -->
+                                        </div>
+                                        <div class=" form-group">
+                                            <label for="exampleInputName1">Price</label>
+                                            <input type="text" class="form-control common_pd" placeholder="Product Price" name="price"
+                                                id="price" disabled>
+                                        </div>
+                                        <div class=" form-group">
+                                            <label for="exampleInputName1">Discount</label>
+                                            <input type="text" class="form-control common_pd" placeholder="Discount" name="discount"
+                                                id="discount" disabled>
+                                        </div>
+                                        <div class=" form-group">
+                                            <label for="exampleInputName1">Sale Price</label>
+                                            <input type="text" class="form-control" placeholder="Product Sale Price" name="sale_price"
+                                                id="sale_price" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                          <label>Upload Image</label>
+                                          <input type="file" name="img[]" class="file-upload-default" disabled>
+                                          <div class="input-group col-xs-12">
+                                            <input type="file" name="image" class="form-control file-upload-info">
+                                            <span class="input-group-append">
+                                              <!-- <button class="file-upload-browse btn btn-primary" type="button">Upload</button> -->
+                                            </span>
+                                          </div>
+                                        </div>
+                                        
                                         <button type="button" class="btn btn-primary me-2 pd_btn"
                                             name="submit">Submit</button>
 
@@ -245,12 +280,45 @@
                       }
                     }
                   }
-
-        });
+                });
             }
+        });
+
+        $('.sub_cat_id').change(function(e) {
+          alert($('.common_pd').length)
+          $('.common_pd').prop('disabled', false)
+          CKEDITOR.replace('description');
+
+          // $('.common_pd').each(function(index){
+          //     console.log(index)
+          //     $(this).prop('disabled', false)
+          // });
 
         });
 
+        var delay = 2000; // 2 seconds
+        var timeoutId;
+
+        $('#discount').keyup(function(){
+          // alert('#discount')
+  
+          clearTimeout(timeoutId);
+          
+          timeoutId = setTimeout(function(){
+
+            price = parseFloat($("#price").val())
+            discount = parseFloat($("#discount").val())
+            sale_price = price - (price * discount)/100
+            console.log(sale_price)
+            $('#sale_price').val(sale_price)
+           
+
+          }, delay);
+         
+          
+
+
+        });
     });
     </script>
 
