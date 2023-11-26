@@ -1,3 +1,8 @@
+
+
+
+
+
 <?php 
     include 'db_config.php';
     // $sql = "SELECT * FROM categories ORDER BY id";
@@ -6,6 +11,74 @@
 
     $sql1 = "SELECT * FROM subcategories ORDER BY id";
     $query1 = mysqli_query($con,$sql1);
+
+    if(isset($_POST['submit'])){
+        $cat_id = $_POST['cat_id'];
+        $sub_cat_id = $_POST['sub_cat_id'];
+        $name = $_POST['name'];
+        $description = $_POST['description'];
+        $price = $_POST['price'];
+        $discount = $_POST['discount'];
+        $discount_price = $price - ($price * $discount)/100;
+
+        // var_dump($_FILES['image']) ;
+        $targetDir = "uploads/";
+        $targetFile = $targetDir . basename($_FILES["image"]["name"]); 
+        
+        $uploadOk = 1;
+        $check = getimagesize($_FILES["image"]["tmp_name"]);
+            
+            
+        if($check !== false) {
+            // echo "File is an image - " . $check["mime"] . ".";
+            $uploadOk = 1;
+        } else {
+            // echo "File is not an image.";
+            $uploadOk = 0;
+        }
+        if (file_exists($targetFile)) {
+            echo "Sorry, the file already exists.";
+            $uploadOk = 0;
+        }
+
+        if ($_FILES["image"]["size"] > 5000000) { // 5MB limit
+            echo "Sorry, your file is too large.";
+            $uploadOk = 0;
+        }
+
+        $allowedExtensions = array("jpg", "jpeg", "png", "gif");
+        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+        if (!in_array($imageFileType, $allowedExtensions)) {
+            echo "Sorry, only JPG, JPEG, PNG, and GIF files are allowed.";
+            $uploadOk = 0;
+        }
+
+        if ($uploadOk == 0) {
+            echo "Sorry, your file was not uploaded.";
+        }
+
+        else{
+            if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
+                echo "The file " . basename($_FILES["image"]["name"]) . " has been uploaded.";
+
+                // Display the uploaded image
+                echo '<img src="' . $targetFile . '" alt="Uploaded Image">';
+            }   
+            else {
+                    echo "Sorry, there was an error uploading your file.";
+            }
+        }
+
+        $image_data = $_FILES["image"]["tmp_name"];
+
+        $sql_create = "INSERT INTO products (cat_id,sub_cat_id,name,description,price,discount,discount_price,image) VALUES ('$cat_id', '$sub_cat_id', '$name' ,'$description','$price','$discount','$discount_price','$targetFile')";
+        $query = mysqli_query($con,$sql_create);
+
+
+
+        // $image = $_POST['image'];
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,10 +127,10 @@
                                 <div class="card-body">
                                     <h4 class="card-title">Category</h4>
                                     <span id="status"></span>
-                                    <form class="forms-sample">
+                                    <form class="forms-sample" action="product.php" method="POST" enctype="multipart/form-data">
                                         <div class=" form-group">
                                             <label for="exampleInputName1">Select Cateogory</label>
-                                            <select class="form-control cat_id">
+                                            <select class="form-control cat_id" name="cat_id">
 
                                                 <option value="0">
                                                     Select your category
@@ -78,8 +151,8 @@
 
                                         </div>
                                         <div class=" form-group">
-                                            <label for="exampleInputName1">Select Cateogory</label>
-                                            <select class="form-control sub_cat_id">
+                                            <label for="exampleInputName1">Select Sub Cateogory</label>
+                                            <select class="form-control sub_cat_id" name="sub_cat_id">
 
                                                 <option value="0">
                                                     Select your Sub Category
@@ -114,7 +187,7 @@
                                         <div class=" form-group">
                                             <label for="exampleInputName1">Price</label>
                                             <input type="text" class="form-control common_input" placeholder=""
-                                                name="description" id="Price" disabled>
+                                                name="price" id="Price" disabled>
                                         </div>
                                         <div class=" form-group">
                                             <label for="exampleInputName1">Discount</label>
@@ -138,7 +211,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <button type="button" class="btn btn-primary me-2 sub_cat_btn"
+                                        <button type="submit" class="btn btn-primary me-2"
                                             name="submit">Submit</button>
 
                                     </form>

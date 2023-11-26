@@ -83,7 +83,7 @@
                                             <input type="text" class="form-control" placeholder="Name" name="name"
                                                 id="sub_cat_name" disabled>
                                         </div>
-                                        <button type="button" class="btn btn-primary me-2 sub_cat_btn"
+                                        <button type="submit" class="btn btn-primary me-2 sub_cat_btn"
                                             name="submit">Submit</button>
 
                                     </form>
