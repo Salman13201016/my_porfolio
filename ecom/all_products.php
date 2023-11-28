@@ -5,8 +5,11 @@
   $sql = "SELECT categories.name as cat_name, GROUP_CONCAT(subcategories.name) as sub_cat_name, GROUP_CONCAT(subcategories.id) as sub_cat_id FROM subcategories INNER JOIN categories ON subcategories.cat_id = categories.id GROUP BY categories.id";
   $query = mysqli_query($con,$sql);
 
-  $sql_product_fetch = "SELECT * FROM products WHERE discount > 10 ORDER BY id DESC LIMIT 10";
-  $query_fetch_prod = mysqli_query($con,$sql_product_fetch);
+  if(isset($_GET['id'])){
+    $sub_cat_id = $_GET['id'];
+    $sql_product_fetch = "SELECT * FROM products WHERE sub_cat_id='$sub_cat_id'";
+    $query_fetch_prod = mysqli_query($con,$sql_product_fetch);
+}
 
 ?>
 <!DOCTYPE html>

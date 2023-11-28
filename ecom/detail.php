@@ -146,11 +146,11 @@
             <div class="basket">
 					<i class="glyphicon glyphicon-shopping-cart"></i>
 				</div>
-				<div class="basket-item-count"><span class="count">2</span></div>
+				<div class="basket-item-count cart_count"><span class="count">2</span></div>
 				<div class="total-price-basket">
 					<span class="lbl">cart -</span>
 					<span class="total-price">
-						<span class="sign">$</span><span class="value">600.00</span>
+						<span class="sign">$</span><span class="value cart_t_price">600.00</span>
 					</span>
 				</div>
 				
@@ -916,7 +916,7 @@
 
 									<div class="col-sm-6">
 										<div class="price-box">
-											<span class="price"><?= $row['discount_price']; ?></span>
+											<span class="price price_details"><?= $row['discount_price']; ?></span>
 											<span class="price-strike"><?= $row['price']; ?></span>
 										</div>
 									</div>
@@ -949,27 +949,21 @@
 										<div class="cart-quantity">
 											<div class="quant-input">
 								                <div class="arrows">
-								                  <div class="arrow plus gradient"><span class="ir"><i class="icon fa fa-sort-asc"></i></span></div>
-								                  <div class="arrow minus gradient"><span class="ir"><i class="icon fa fa-sort-desc"></i></span></div>
+								                  <div class="arrow plus gradient add_quant"><span class="ir"><i class="icon fa fa-sort-asc"></i></span></div>
+								                  <div class="arrow minus gradient minus_quant"><span class="ir"><i class="icon fa fa-sort-desc"></i></span></div>
 								                </div>
-								                <input type="text" value="1">
+								                <input type="text" value="1" class="quant_input">
 							              </div>
 							            </div>
 									</div>
 
 									<div class="col-sm-7">
-										<a href="#" class="btn btn-primary"><i class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART</a>
+										<a href="#" class="btn btn-primary add_cart_btn"><i class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART</a>
 									</div>
 
 									
 								</div><!-- /.row -->
-							</div><!-- /.quantity-container -->
-
-							
-
-							
-
-							
+							</div><!-- /.quantity-container -->							
 						</div><!-- /.product-info -->
 					</div><!-- /.col-sm-7 -->
 				</div><!-- /.row -->
@@ -1694,6 +1688,7 @@
     <script src="u_assets/js/bootstrap-select.min.js"></script>
     <script src="u_assets/js/wow.min.js"></script>
     <script src="u_assets/js/scripts.js"></script>
+	<script src="u_assets/js/detail.js"></script>
 
 	
 
